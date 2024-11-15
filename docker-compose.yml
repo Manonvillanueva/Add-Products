@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    ports:
+      - "81:80"
+    volumes:
+      - ./:/var/www/html
+    # Qu'est-ce que ça fait ? Cette ligne indique que le service web dépend du service db. Cela signifie que db (la base de données) doit être lancé avant web.
+    # Qu'est-ce que ça fait ? Cette ligne indique que le service web dépend du service db. Cela signifie que db (la base de données) doit être lancé avant web.
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: products_db
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

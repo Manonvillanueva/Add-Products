@@ -26,7 +26,7 @@ if ($_POST["add-btn"]) {
         $message = '<p style="color:red">Le produit existe déjà</p>';
       } else {
         // Si une image a été téléchargée 
-        if (isset($_FILES["product-image"])) {
+        if (!empty($_FILES["product-image"]["name"])) {
           // On récupère le nom de l'image
           $name = $_FILES['product-image']['name'];
           // Nous lui donnons un nom temporaire 
@@ -43,12 +43,14 @@ if ($_POST["add-btn"]) {
             // Si les données ont bien été envoyées à la base de donnée 
             if ($result) {
               $message = '<p style="color:green">Produit ajouté avec succès</p>';
+              $productName = '';
+              $productDescription = '';
             } else {
               $message = '<p style="color:red">Votre produit n\'a pas été ajouté</p>';
             }
           }
         } else {
-          $message = '<p style="color:red">Veuillez remplir tous les champs</p>';
+          $message = '<p style="color:red">Veuillez rajouter une image</p>';
         }
       }
     }
@@ -80,10 +82,10 @@ if ($_POST["add-btn"]) {
       </div>
       <!-- NAME PRODUCT  -->
       <label for="product-name">Nom du produit</label>
-      <input type="text" id="product-name" name="product-name" required />
+      <input type="text" id="product-name" name="product-name" value="<?php echo ($productName ?? ''); ?>" required />
       <!-- DESCRIPTION PRODUCT  -->
       <label for="product-description">Description du produit</label>
-      <textarea id="product-description" name="product-description" required></textarea>
+      <textarea id="product-description" name="product-description" required><?php echo ($productDescription ?? ''); ?></textarea>
       <!-- IMG PRODUCT  -->
       <!-- enctype="multipart/form-data"> Cela permet d’envoyer des fichiers via le formulaire. -->
       <label for="add-img">Ajouter une image</label>
